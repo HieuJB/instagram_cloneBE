@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\userController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::group(['prefix'=>'user'],function(){
+    Route::post('register',[userController::class,'create']);
+    Route::get('verifi/{token}',[userController::class,'userVerification']);
+    Route::post('login',[userController::class,'handleLogin']);
+    Route::middleware('auth:api')->get('me',[userController::class,'checkInfo']);
+    Route::middleware('auth:api')->get('resend',[userController::class,'resendEmail']);
+    Route::get('forgetPassword',[userController::class,'forgetPassword']);
+});
+
